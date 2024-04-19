@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %} Payment {% endblock %}
+
+{% block content %}
+<style>
+    /* Custom Styles */
+    .container {
+        max-width: 600px; /* Adjust the width as needed */
+        margin: auto;
+    }
+
+    .flash-message {
+        margin-bottom: 10px;
+    }
+
+    .form-group1 {
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="container mt-4">
+    <h2 class="text-center">Payment</h2>
+
+    <form method="POST" action="{{ url_for('submit_payment') }}" class="mt-3">
+        {% with messages = get_flashed_messages() %}
+            {% for message in messages %}
+                <div class="flash-message alert alert-danger">{{ message }}</div>
+            {% endfor %}
+        {% endwith %}
+
+        {% if not has_payment_details %}
+            <h4 class="mb-4">Add Payment Details:</h4>
+            <div class="form-check">
+                <input type="radio" id="new_payment" name="payment_detail" value="new_payment" checked class="form-check-input">
+                <label for="new_payment" class="form-check-label">Enter Card Details</label>
+
+                {% from "includes/_formHelper.html" import render_field %}
+                <div class="form-group1">
+                    {{ render_field(form.card_number, class="form-control", placeholder="Card Number") }}
+                </div>
+                <div class="form-group1">
+                    {{ render_field(form.expiration_date, class="form-control", placeholder="Expiration Date") }}
+                </div>
+                <div class="form-group1">
+                    {{ render_field(form.cvv, class="form-control", placeholder="CVV") }}
+                </div>
+                <div class="form-group1">
+                    {{ render_field(form.card_name, class="form-control", placeholder="Cardholder Name") }}
+                </div>
+            </div>
+
+        {% else %}
+            <h4 class="mb-4">Select Payment Method:</h4>
+            {% for Payment in payment_details_list %}
+                <div class="form-check">
+                    <input type="radio" id="{{ Payment.get_payment_details_id() }}" name="payment_detail" value="{{ Payment.get_payment_details_id() }}" class="form-check-input">
+                    <label for="{{ Payment.get_payment_details_id() }}" class="form-check-label">
+                        {{ Payment.get_card_number() }}
+                        ({{ Payment.get_card_name() }})
+                    </label>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="mt-3">
+            <button type="submit" class="btn btn-primary">Submit Payment</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

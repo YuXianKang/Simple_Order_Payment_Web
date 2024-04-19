@@ -1,0 +1,116 @@
+<style>
+    h1 {
+        text-align: center;
+        color: #8B4513; /* Warm brown tone */
+    }
+
+    table {
+        margin: 50px 0;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow for the table */
+    }
+
+    th, td {
+        text-align: center;
+    }
+
+    .btn-warm {
+        background-color: #8B4513; /* Warm brown tone for buttons */
+        color: #FFFFFF; /* White text for buttons */
+    }
+
+    .btn-warm:hover {
+        background-color: #A0522D; /* Darker shade on hover */
+    }
+
+    .btn-delete {
+        background-color: #DC143C; /* Crimson red for delete button */
+    }
+
+    .btn-delete:hover {
+        background-color: #8B0000; /* Darker shade on hover */
+    }
+
+    .btn-dark {
+        background-color: #2C3E50; /* Dark blue-gray for "Add New Card Details" button */
+    }
+
+    .btn-dark:hover {
+        background-color: #1E2F40; /* Darker shade on hover */
+    }
+
+    .flash-messages {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        width: 300px;
+        max-height: 100px;
+        overflow-y: auto;
+        z-index: 1000;
+    }
+
+    .flash-message {
+        margin-bottom: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #f8d7da;
+        color: #721c24;
+        border-radius: 4px;
+    }
+</style>
+
+{% extends "base.html" %}
+{% block title %}VIEWING PAYMENT DETAILS{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Viewing Payment Details</h1>
+    <div>
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.startswith('Payment details deleted successfully') %}
+                            <div class="flash-message">{{ message }}</div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+        <table class="table table-striped" style="background-color:#EFDECD;" border="1px ridge black">
+            <thead>
+            <tr>
+                <th>Payment Details ID</th>
+                <th>Card Number</th>
+                <th>Expiration Date</th>
+                <th>CVV</th>
+                <th>Card Name</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for Payment in payment_details_list %}
+            <tr>
+                <td>{{ Payment.get_payment_details_id() }}</td>
+                <td>{{ Payment.get_card_number()}}</td>
+                <td>{{ Payment.get_expiration_date() }}</td>
+                <td>{{ Payment.get_cvv()}}</td>
+                <td>{{ Payment.get_card_name() }}</td>
+                <td>
+                    <a href="/update_payment/{{Payment.get_payment_details_id()}}" class="btn btn-warning btn-warm">Update</a>
+                </td>
+                <td>
+                    <form action="{{url_for('delete_payment', id=Payment.get_payment_details_id())}}" method="POST">
+                        <input type="submit" value="Delete" class="btn btn-danger btn-delete" onclick="return confirm('Are you sure you want to delete {{Payment.get_card_number()}} card details?');">
+                        <!-- Modal code removed for simplicity -->
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <a href="/payment_details" class="btn btn-dark btn-warm">Add New Card Details</a>
+    </div>
+</div>
+{% endblock %}

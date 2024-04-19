@@ -1,0 +1,60 @@
+<style>
+    .form-group0 {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        width: 60%;
+        margin: 0 auto;
+        padding: 30px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 0 20px rgba(253, 229, 180, 0.6);
+        background-color: #f5d28c;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Warm Tone Styles */
+    .warm-text {
+        color: #8B4513; /* SaddleBrown */
+    }
+
+    .warm-button {
+        background-color: #8B4513; /* SaddleBrown, matching background color */
+        color: #FFD700; /* Gold, contrasting text color */
+        padding: 10px 20px; /* Adjust padding for a larger button */
+        font-size: larger; /* Make font size larger */
+        border: 2px solid #8B4513; /* Set a fixed border size */
+        border-radius: 5px; /* Add some border radius */
+        margin-top: 20px; /* Add some top margin */
+        transition: background-color 0.3s ease; /* Add a smooth transition effect */
+    }
+
+    .warm-button:hover {
+        background-color: #DAA520; /* Darker shade on hover for emphasis */
+    }
+
+    .form-control {
+        width: 70%;
+        padding: 8px; /* Adjust padding for a comfortable input size */
+        margin-bottom: 10px; /* Add some bottom margin */
+        border: 1px solid #8B4513; /* Add a border for visual clarity */
+        border-radius: 3px; /* Add a slight border radius */
+    }
+</style>
+
+{% extends "base.html" %}
+{% block title %} ORDER COLLECTION {% endblock %}
+
+{% block content %}
+    {% from "includes/_formHelper.html" import render_field %}
+
+    <form method="post" class="form-group0">
+        {{ render_field(form.collection_type, class="form-control warm-text form-control-lg") }}
+        <input type="submit" value="Enter" class="btn warm-button">
+    </form>
+{% endblock %}
