@@ -47,6 +47,7 @@
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Subtotal</th>
+                <th>Points Earned</th>
             </tr>
         </thead>
         <tbody>
@@ -56,6 +57,7 @@
                     <td>{{ item.quantity }}</td>
                     <td>${{ item.price }}</td>
                     <td>${{ item.quantity * item.price }}</td>
+                    <td>{{  item.points_earned  }}</td>
                 </tr>
             {% endfor %}
         </tbody>

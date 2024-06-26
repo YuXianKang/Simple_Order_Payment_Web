@@ -347,9 +347,9 @@ def update_cart_item(product_id):
 
         # Check if there are any orders
         if not orders:
-             flash("Order not found", "error")
-             order_db.close()
-             return redirect(url_for('home'))
+            flash("Order not found", "error")
+            order_db.close()
+            return redirect(url_for('home'))
 
         # Retrieve the last order ID
         order_id = list(orders.keys())[-1]  # Assuming you want the latest order
@@ -357,8 +357,8 @@ def update_cart_item(product_id):
 
         # Check if order details are available
         if not order_id:
-             flash("Order not found", "error")
-             return redirect(url_for('home'))
+            flash("Order not found", "error")
+            return redirect(url_for('home'))
 
         # Retrieve new quantity from the form
         new_quantity = request.form.get('quantity', '0')
@@ -366,8 +366,8 @@ def update_cart_item(product_id):
             # Convert the new_quantity to an integer
             new_quantity = int(new_quantity)
         except ValueError:
-             flash("Invalid quantity value", "error")
-             return redirect(url_for('view_cart'))
+            flash("Invalid quantity value", "error")
+            return redirect(url_for('view_cart'))
 
         # Open the shelves database for cart update
         cart_db = shelve.open('order.db', 'c')
@@ -375,8 +375,8 @@ def update_cart_item(product_id):
 
         # Update the quantity of the specified product in the cart
         for item in cart.get(order_id, []):
-             if item['product_id'] == product_id:
-                 item['quantity'] = new_quantity
+            if item['product_id'] == product_id:
+                item['quantity'] = new_quantity
 
         # Save the updated cart back to the database
         cart_db['cart'] = cart
@@ -535,8 +535,7 @@ def success_payment():
     # Render the success page with order details
     order_db.close()
     return render_template('success_payment.html', order_id=order_id, order_data=order_data,
-                           grand_total=grand_total, collection_type=collection_type,
-                           order_cart=order_cart)
+                           grand_total=grand_total, collection_type=collection_type, order_cart=order_cart)
 
 
 if __name__ == '__main__':
